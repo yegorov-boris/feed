@@ -12,17 +12,18 @@ use hyper_router::{Route, RouterBuilder, RouterService};
 mod requests;
 mod handlers;
 
-use crate::handlers::profiles as p;
+use crate::handlers::profiles as pr;
+use crate::handlers::posts as p;
 
 fn router_service() -> Result<RouterService, std::io::Error> {
     let router = RouterBuilder::new()
-        .add(Route::get("/posts").using(p::request_handler))
-        .add(Route::post("/posts").using(p::request_handler))
-        .add(Route::put("/posts/\\d+").using(p::request_handler))
-        .add(Route::delete("/posts/\\d+").using(p::request_handler))
-        .add(Route::post("/profiles").using(p::request_handler))
-        .add(Route::put("/profiles/\\d+").using(p::request_handler))
-        .add(Route::delete("/profiles/\\d+").using(p::request_handler))
+        .add(Route::get("/posts").using(p::handle_get))
+        .add(Route::post("/posts").using(p::handle_post))
+        .add(Route::put("/posts/\\d+").using(p::handle_put))
+        .add(Route::delete("/posts/\\d+").using(p::handle_delete))
+        .add(Route::post("/profiles").using(pr::handle_post))
+        .add(Route::put("/profiles/\\d+").using(pr::handle_put))
+        .add(Route::delete("/profiles/\\d+").using(pr::handle_delete))
         .build();
 
     Ok(RouterService::new(router))
